@@ -3,6 +3,7 @@ import { db } from "./firebase";
 import { ref, set, remove, onValue } from "firebase/database";
 import Lobby from "./Lobby";
 import GameArea from "./GameArena";
+import "./game.css";
 
 const ROOM_TTL_MS = 2 * 60 * 60 * 1000; // 2 ώρες
 
@@ -84,9 +85,9 @@ function App() {
 
   if (!roomId) {
     return (
-      <div style={{ textAlign: "center", marginTop: "100px", fontFamily: "sans-serif" }}>
-        <h1>Codenames Multiplayer</h1>
-        <button onClick={createRoom} style={{ padding: "12px 24px", fontSize: "16px", cursor: "pointer" }}>
+      <div className="home-screen">
+        <h1>DescribeIt</h1>
+        <button onClick={createRoom}>
           Δημιουργία Νέου Δωματίου
         </button>
       </div>

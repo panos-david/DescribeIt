@@ -71,23 +71,16 @@ function TeamControls({ roomId, gameState, me }) {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px", padding: "20px", background: "#e9ecef", borderRadius: "8px" }}>
-      <div>
-        <h4 style={{ margin: "0 0 10px 0" }}>Ψηφοφορία Ομάδας</h4>
-        <p style={{ margin: 0, fontSize: "14px" }}>Επιλέξτε μια λέξη στο ταμπλό. Μόλις συμφωνήσετε, πατήστε Υποβολή.</p>
-        <p style={{ margin: "5px 0 0 0", fontSize: "14px", fontWeight: "bold" }}>
-          Προσπάθειες: {gameState.currentClue.guessesMade || 0} / {gameState.currentClue.count + 1}
-        </p>
+    <div className="team-controls">
+      <div className="team-controls-info">
+        <h4>Ψηφοφορία Ομάδας</h4>
+        <p>Επιλέξτε μια λέξη στο ταμπλό. Μόλις συμφωνήσετε, πατήστε Υποβολή.</p>
+        <p><strong>Προσπάθειες: {gameState.currentClue.guessesMade || 0} / {gameState.currentClue.count + 1}</strong></p>
       </div>
-      
       {me.role === "member" && (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <button onClick={handleEndTurn} style={{ padding: "10px 20px", background: "#6c757d", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-            Πάσο
-          </button>
-          <button onClick={submitGuess} style={{ padding: "10px 20px", background: "#28a745", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold" }}>
-            Οριστική Υποβολή
-          </button>
+        <div className="team-buttons">
+          <button onClick={handleEndTurn} style={{ background: "#6c757d", color: "white" }}>Πάσο</button>
+          <button onClick={submitGuess} style={{ background: "#28a745", color: "white" }}>Οριστική Υποβολή</button>
         </div>
       )}
     </div>

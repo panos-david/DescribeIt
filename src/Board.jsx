@@ -62,37 +62,23 @@ function Board({ roomId, gameState, me }) {
       color: textColor,
       border: border,
       opacity: opacity,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100px",
-      fontSize: "18px",
-      fontWeight: "bold",
-      borderRadius: "8px",
       cursor: (me.role === "member" && !card.revealed) ? "pointer" : "default",
-      userSelect: "none",
-      transition: "all 0.2s ease-in-out"
     };
   };
 
   return (
-    <div style={{ 
-      display: "grid", 
-      gridTemplateColumns: "repeat(5, 1fr)", 
-      gap: "10px", 
-      margin: "20px 0" 
-    }}>
+    <div className="game-board">
       {board.map((card, index) => (
-        <div 
-          key={card.id} 
+        <div
+          key={card.id}
+          className="game-card"
           style={getCardStyle(card)}
           onClick={() => handleCardClick(index)}
         >
           {card.word}
-          {/* Δείκτης ψήφων αν υπάρχουν */}
           {Object.values(gameState.votes || {}).filter(v => v === card.id).length > 0 && !card.revealed && (
-            <div style={{ position: "absolute", marginTop: "60px", fontSize: "12px", background: "#ffc107", color: "#000", padding: "2px 6px", borderRadius: "10px" }}>
-              {Object.values(gameState.votes || {}).filter(v => v === card.id).length} ψήφοι
+            <div className="game-card-votes">
+              {Object.values(gameState.votes || {}).filter(v => v === card.id).length}ψ
             </div>
           )}
         </div>
