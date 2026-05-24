@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { ref, set, onValue } from "firebase/database";
 import Lobby from "./Lobby";
+import GameArea from "./GameArena";
 
 function App() {
   const [roomId, setRoomId] = useState("");
@@ -76,12 +77,7 @@ function App() {
     return <Lobby roomId={roomId} gameState={gameState} playerId={playerId} />;
   }
 
-  return (
-    <div style={{ textAlign: "center", marginTop: "100px", fontFamily: "sans-serif" }}>
-      <h2>Το παιχνίδι ξεκίνησε!</h2>
-      {/* Εδώ θα γίνει render το GameArea component στο επόμενο βήμα */}
-    </div>
-  );
+  return <GameArea roomId={roomId} gameState={gameState} playerId={playerId} />;
 }
 
 export default App;

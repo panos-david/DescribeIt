@@ -54,9 +54,9 @@ function Lobby({ roomId, gameState, playerId }) {
       return;
     }
 
-    // Στο επόμενο βήμα θα ενσωματωθεί εδώ η γεννήτρια των 25 λέξεων (10-10-2-3)
+    const board = generateBoard();
     const roomRef = ref(db, `rooms/${roomId}`);
-    update(roomRef, { status: "playing" });
+    update(roomRef, { status: "playing", board, turn: "teamA_captain" });
   };
 
   return (
