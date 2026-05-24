@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { db } from "./firebase";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, remove, onValue } from "firebase/database";
 import Lobby from "./Lobby";
 import GameArea from "./GameArena";
+
+const ROOM_TTL_MS = 2 * 60 * 60 * 1000; // 2 ώρες
 
 function App() {
   const [roomId, setRoomId] = useState("");
@@ -30,7 +32,19 @@ function App() {
     const roomRef = ref(db, `rooms/${roomId}`);
     const unsubscribe = onValue(roomRef, (snapshot) => {
       if (snapshot.exists()) {
-        setGameState(snapshot.val());
+        const data = snapshot.val();
+        // Firebase αποθηκεύει arrays ως objects — τα κανονικοποιούμε
+        if (data.board && !Array.isArray(data.board)) {
+          data.board = Object.values(data.board);
+        } else if (!data.board) {
+          data.board = [];
+        }
+        // TTL: διαγραφή δωματίου αν έχει λήξει
+        if (data.createdAt && Date.now() - data.createdAt > ROOM_TTL_MS) {
+          remove(roomRef);
+          return;
+        }
+        setGameState(data);
       } else {
         setGameState(null);
       }
@@ -38,6 +52,15 @@ function App() {
 
     return () => unsubscribe();
   }, [roomId]);
+
+  // Αυτόματη διαγραφή 60s μετά τη λήξη του παιχνιδιού
+  useEffect(() => {
+    if (gameState?.status === "finished" && roomId) {
+      const roomRef = ref(db, `rooms/${roomId}`);
+      const timer = setTimeout(() => remove(roomRef), 60000);
+      return () => clearTimeout(timer);
+    }
+  }, [gameState?.status, roomId]);
 
   const createRoom = () => {
     const newRoomId = "room_" + Math.random().toString(36).substring(2, 8);
@@ -49,7 +72,8 @@ function App() {
       players: {},
       board: [],
       currentClue: { word: "", count: 0, guessesMade: 0 },
-      votes: {}
+      votes: {},
+      createdAt: Date.now()
     };
 
     set(roomRef, initialState).then(() => {

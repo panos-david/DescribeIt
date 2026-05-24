@@ -27,6 +27,12 @@
           "$playerName": {
             ".validate": "newData.isNumber()"
           }
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "winner": {
+          ".validate": "newData.isString() && (newData.val() === 'teamA' || newData.val() === 'teamB')"
         }
       }
     }
