@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "rooms": {
+      "$roomId": {
+        ".read": true,
+        ".write": true,
+        "players": {
+          "$playerId": {
+            ".validate": "newData.hasChildren(['name', 'team', 'role'])"
+          }
+        },
+        "board": {
+          "$index": {
+            ".validate": "newData.hasChildren(['id', 'word', 'type', 'revealed'])"
+          }
+        },
+        "currentClue": {
+          ".validate": "newData.hasChildren(['word', 'count', 'guessesMade'])"
+        },
+        "status": {
+          ".validate": "newData.isString() && (newData.val() === 'lobby' || newData.val() === 'playing' || newData.val() === 'finished')"
+        },
+        "turn": {
+          ".validate": "newData.isString() && (newData.val() === 'teamA_captain' || newData.val() === 'teamA_guess' || newData.val() === 'teamB_captain' || newData.val() === 'teamB_guess')"
+        },
+        "votes": {
+          "$playerName": {
+            ".validate": "newData.isNumber()"
+          }
+        }
+      }
+    }
+  }
+}
