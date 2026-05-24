@@ -47,7 +47,7 @@ function App() {
       turn: "teamA_captain",
       players: {},
       board: [],
-      currentClue: { word: "", count: 0 },
+      currentClue: { word: "", count: 0, guessesMade: 0 },
       votes: {}
     };
 
